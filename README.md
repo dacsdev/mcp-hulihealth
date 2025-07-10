@@ -62,6 +62,11 @@ The full Python MCP is available in /legacy-python-mcp/ for reference.
 
 All new development must follow the standards described in /PROMPT.MD.
 
+## Legacy Python MCP
+
+The previous Python implementation (now archived for migration/reference) is available in `legacy-python-mcp/`.  
+All business logic, parameter validation, and endpoint design should be preserved and ported to the new Node.js/TypeScript architecture as described in `PROMPT.MD`.
+
 🤖 About
 Created by dacsdev.
 Designed for integration with LLM agents, workflow automation (n8n), and secure, enterprise-ready health tech platforms.
