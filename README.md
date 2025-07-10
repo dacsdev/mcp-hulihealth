@@ -71,17 +71,3 @@ All business logic, parameter validation, and endpoint design should be preserve
 Created by dacsdev.
 Designed for integration with LLM agents, workflow automation (n8n), and secure, enterprise-ready health tech platforms.
 
-yaml
-Copy
-Edit
-
----
-
-### **¿Cómo usarla?**
-- Pega esto en tu `README.md`.
-- Modifica los enlaces/autores si lo deseas.
-- Puedes agregar badges de CI, coverage, etc. después.
-
----
-
-¿Quieres agregar ejemplos de endpoints, o prefieres mantenerlo simple y técnico por ahora?
