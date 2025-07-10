@@ -62,6 +62,15 @@ The full Python MCP is available in /legacy-python-mcp/ for reference.
 
 All new development must follow the standards described in /PROMPT.MD.
 
+## 🔑 Environment Variables
+
+You must set the following environment variables for the MCP server to authenticate with HuliHealth:
+
+- `HULIHEALTH_API_KEY`
+- `HULI_ORG_ID`
+
+These can be provided in a `.env` file (for local dev) or directly in your cloud/CI environment.
+
 ## Legacy Python MCP
 
 The previous Python implementation (now archived for migration/reference) is available in `legacy-python-mcp/`.  
