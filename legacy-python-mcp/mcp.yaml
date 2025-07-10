@@ -1,0 +1,137 @@
+mcp_version: 1
+name: Huli MCP
+description: Tools that wrap the HuliHealth API
+
+tools:
+  - name: agendar_cita
+    description: Crea una nueva cita médica
+    parameters: [doctor_id, clinic_id, patient_file_id, source_event, notes, color]
+  - name: cancelar_cita
+    description: Cancela una cita existente
+    parameters: [event_id, is_status_modified_by_patient]
+  - name: reagendar_cita
+    description: Reagenda una cita a otro horario
+    parameters: [event_id, source_event, start_date, time_from, time_to]
+  - name: consultar_disponibilidad
+    description: Consulta slots disponibles
+    parameters: [doctor_id, clinic_id]
+  - name: obtener_doctores
+    description: Obtiene doctores disponibles en una clínica
+    parameters: [clinic_id]
+  - name: obtener_doctor
+    description: Obtiene información de un doctor
+    parameters: [doctor_id]
+  - name: obtener_paciente
+    description: Obtiene información de un paciente
+    parameters: [patient_file_id]
+  - name: buscar_paciente_externo
+    description: Busca paciente por ID externo
+    parameters: [external_id]
+  - name: obtener_citas
+    description: Obtiene citas filtrando por doctor o paciente
+    parameters: [doctor_id, patient_file_id, from, to, limit, offset, status_appointment, id_clinic]
+  - name: obtener_clinicas
+    description: Lista clínicas de la organización
+    parameters: []
+  - name: obtener_clinica
+    description: Obtiene información de una clínica
+    parameters: [clinic_id]
+  - name: obtener_token
+    description: Obtiene token JWT usando api_key
+    parameters: [api_key]
+  - name: get_medical_record
+    description: Obtiene historial médico completo
+    parameters: [patient_id, owner_id]
+  - name: get_checkup
+    description: Obtiene checkup por event_id
+    parameters: [event_id]
+  - name: get_checkup_note
+    description: Notas del checkup
+    parameters: [event_id]
+  - name: get_checkup_diagnosis
+    description: Diagnóstico del checkup
+    parameters: [event_id]
+  - name: get_checkup_prescription
+    description: Receta del checkup
+    parameters: [event_id]
+  - name: get_checkup_vital_signs
+    description: Signos vitales del checkup
+    parameters: [event_id]
+  - name: get_checkup_lab_procedure_request
+    description: Solicitudes de laboratorio del checkup
+    parameters: [event_id]
+  - name: get_checkup_suffering
+    description: Síntomas del checkup
+    parameters: [event_id]
+  - name: get_checkup_reason_of_visit
+    description: Motivo de visita del checkup
+    parameters: [event_id]
+  - name: get_checkup_physical_note
+    description: Nota física del checkup
+    parameters: [event_id]
+  - name: get_checkup_anthropometric_data
+    description: Datos antropométricos del checkup
+    parameters: [event_id]
+  - name: get_checkup_review_of_systems
+    description: Revisión de sistemas del checkup
+    parameters: [event_id]
+  - name: get_checkup_systematic_examination
+    description: Examen sistemático del checkup
+    parameters: [event_id]
+  - name: get_checkup_sleep_pattern
+    description: Patrón de sueño del checkup
+    parameters: [event_id]
+  - name: get_checkup_bowel_habit
+    description: Hábito intestinal del checkup
+    parameters: [event_id]
+  - name: get_checkup_plan_note
+    description: Nota de plan del checkup
+    parameters: [event_id]
+  - name: get_checkup_custom_questions
+    description: Preguntas personalizadas del checkup
+    parameters: [event_id]
+  - name: get_checkup_last_menstrual_cycle
+    description: Último ciclo menstrual del checkup
+    parameters: [event_id]
+  - name: create_patient_file
+    description: Crea un expediente de paciente
+    parameters: [data]
+  - name: list_patient_files
+    description: Lista expedientes de pacientes
+    parameters: [query, limit, offset]
+  - name: get_patient_file
+    description: Obtiene un expediente de paciente
+    parameters: [patient_file_id]
+  - name: upload_patient_document
+    description: Sube un documento a un expediente
+    parameters: [patient_file_id, owner_id, data]
+  - name: get_organization
+    description: Información de la organización
+    parameters: [expand]
+  - name: list_appointment_tags
+    description: Lista tags de citas
+    parameters: [limit, offset]
+  - name: get_most_used_appointment_colors
+    description: Ranking de colores de citas
+    parameters: [doctor_id, clinic_id, patient_file_id, from, to, status_appointment, limit]
+  - name: get_appointment_by_id
+    description: Obtiene una cita por ID
+    parameters: [event_id]
+  - name: update_appointment
+    description: Actualiza una cita existente
+    parameters: [event_id, data]
+  - name: confirm_appointment
+    description: Confirma una cita por el paciente
+    parameters: [event_id]
+  - name: mark_no_show
+    description: Marca una cita como no show
+    parameters: [event_id]
+  - name: get_doctor_by_user
+    description: Obtiene doctor usando el ID de usuario
+    parameters: [user_id]
+  - name: get_doctor_clinic_phone
+    description: Teléfono de la clínica de un doctor
+    parameters: [doctor_id, clinic_id]
+  - name: get_doctor_clinic_address
+    description: Dirección de la clínica de un doctor
+    parameters: [doctor_id, clinic_id]
