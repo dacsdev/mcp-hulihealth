@@ -45,7 +45,7 @@ class HuliClient {
     if (!this.token) await this.authenticate();
     const headers = {
       Authorization: `Bearer ${this.token}`,
-      id_organization: process.env.HULI_ORG_ID,
+@@ -29,28 +49,180 @@ class HuliClient {
       ...config.headers,
     };
     try {
