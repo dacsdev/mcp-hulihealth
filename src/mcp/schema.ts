@@ -43,10 +43,6 @@ export interface Appointment {
 export interface CancelAppointmentRequest {
   is_status_modified_by_patient: boolean;
 }
-
-export interface CancelAppointmentRequest {
-  is_status_modified_by_patient: boolean;
-}
 export interface RescheduleAppointmentRequest {
   isStatusModifiedByPatient: boolean;
   startDate: string;

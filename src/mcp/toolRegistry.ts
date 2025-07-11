@@ -1,149 +1,61 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import { FastifyInstance } from 'fastify';
 import {
-  CreateAppointmentRequest,
-  Appointment,
-  CancelAppointmentRequest,
-  RescheduleAppointmentRequest,
-  UpdateAppointmentRequest,
-  DoctorAvailabilityResponse,
-  AppointmentList,
-  AppointmentTagsResponse,
-} from '../mcp/schema';
-import dotenv from 'dotenv';
+  scheduleAppointment,
+  ScheduleAppointmentParams,
+} from '../tools/scheduleAppointment';
+import {
+  cancelAppointment,
+  CancelAppointmentParams,
+} from '../tools/cancelAppointment';
+import { rescheduleAppointment, RescheduleAppointmentParams } from '../tools/rescheduleAppointment';
+import { getAvailability, GetAvailabilityParams } from '../tools/getAvailability';
+import { getAppointments, GetAppointmentsParams } from '../tools/getAppointments';
+import { getAppointmentById, GetAppointmentByIdParams } from '../tools/getAppointmentById';
+import { updateAppointment, UpdateAppointmentParams } from '../tools/updateAppointment';
+import { confirmAppointment, ConfirmAppointmentParams } from '../tools/confirmAppointment';
+import { markNoShow, MarkNoShowParams } from '../tools/markNoShow';
+import { getMostUsedAppointmentColors, GetMostUsedAppointmentColorsParams } from '../tools/getMostUsedAppointmentColors';
+import { listAppointmentTags, ListAppointmentTagsParams } from '../tools/listAppointmentTags';
+import { Appointment } from './schema';
+import { z } from 'zod';
 
-dotenv.config();
-
-const BASE_URL = 'https://api.huli.io/practice/v2';
-
-class HuliClient {
-  private token?: string;
-  private client: AxiosInstance;
-
-  constructor() {
-    this.client = axios.create({ baseURL: BASE_URL });
-  }
-
-  private async authenticate(): Promise<void> {
-    const apiKey = process.env.HULIHEALTH_API_KEY;
-    if (!apiKey) throw new Error('HULIHEALTH_API_KEY is not set');
-    const res = await axios.post<{ data: { jwt: string } }>(`${BASE_URL}/authorization/token`, { api_key: apiKey });
-    this.token = res.data.data.jwt;
-  }
-
-  private async request<T>(config: AxiosRequestConfig): Promise<T> {
-    if (!this.token) await this.authenticate();
-    const headers = {
-      Authorization: `Bearer ${this.token}`,
-@@ -29,28 +38,112 @@ class HuliClient {
-      ...config.headers,
-    };
-    try {
-      const res = await this.client.request<T>({ ...config, headers });
-      // Axios returns data property
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return (res as any).data;
-    } catch (err: any) {
-      if (err.response && [401, 403].includes(err.response.status)) {
-        await this.authenticate();
-        const retryHeaders = {
-          Authorization: `Bearer ${this.token}`,
-          id_organization: process.env.HULI_ORG_ID,
-          ...config.headers,
-        };
-        const res = await this.client.request<T>({ ...config, headers: retryHeaders });
-        return (res as any).data;
-      }
-      throw err;
-    }
-  }
-
-  async createAppointment(data: CreateAppointmentRequest): Promise<Appointment> {
-    return this.request<Appointment>({ method: 'POST', url: '/appointment', data });
-  }
-
-  async cancelAppointment(eventId: string, data: CancelAppointmentRequest): Promise<Appointment> {
-    return this.request<Appointment>({ method: 'PUT', url: `/appointment/${eventId}/cancel`, data });
-  }
-
-  async rescheduleAppointment(eventId: string, data: RescheduleAppointmentRequest): Promise<Appointment> {
-    return this.request<Appointment>({ method: 'PUT', url: `/appointment/${eventId}/reschedule`, data });
-  }
-
-  async getAvailability(
-    doctorId: string,
-    clinicId: string,
-    from: string,
-    to: string
-  ): Promise<DoctorAvailabilityResponse> {
-    return this.request<DoctorAvailabilityResponse>({
-      method: 'GET',
-      url: `/availability/doctor/${doctorId}/clinic/${clinicId}`,
-      params: { from, to },
-    });
-  }
-
-  async getAppointmentsByDoctor(
-    doctorId: string,
-    options: {
-      from?: string;
-      to?: string;
-      limit?: number;
-      offset?: number;
-      status_appointment?: string;
-      idClinic?: string;
-    } = {}
-  ): Promise<AppointmentList> {
-    return this.request<AppointmentList>({
-      method: 'GET',
-      url: `/appointment/doctor/${doctorId}`,
-      params: options,
-    });
-  }
-
-  async getAppointmentsByPatient(
-    patientFileId: string,
-    options: {
-      from?: string;
-      to?: string;
-      limit?: number;
-      offset?: number;
-      status_appointment?: string;
-    } = {}
-  ): Promise<AppointmentList> {
-    return this.request<AppointmentList>({
-      method: 'GET',
-      url: `/appointment/patient/${patientFileId}`,
-      params: options,
-    });
-  }
-
-  async getAppointmentById(eventId: string): Promise<Appointment> {
-    return this.request<Appointment>({ method: 'GET', url: `/appointment/${eventId}` });
-  }
-
-  async updateAppointment(eventId: string, data: UpdateAppointmentRequest): Promise<Appointment> {
-    return this.request<Appointment>({ method: 'PUT', url: `/appointment/${eventId}`, data });
-  }
-
-  async confirmAppointment(eventId: string): Promise<Appointment> {
-    return this.request<Appointment>({ method: 'PUT', url: `/appointment/${eventId}/patient-confirm` });
-  }
-
-  async markNoShow(eventId: string): Promise<Appointment> {
-    return this.request<Appointment>({ method: 'PUT', url: `/appointment/${eventId}/no-show` });
-  }
-
-  async listAppointmentTags(limit = 10, offset = 0): Promise<AppointmentTagsResponse> {
-    return this.request<AppointmentTagsResponse>({
-      method: 'GET',
-      url: '/appointment/tags',
-      params: { limit, offset },
-    });
-  }
-
-  async listPatientFiles(query: string, limit = 1): Promise<any> {
-    return this.request<any>({ method: 'GET', url: '/patient-file', params: { query, limit, offset: 0 } });
-  }
+export interface Tool<P, R> {
+  name: string;
+  description: string;
+  parameters: z.ZodType<P>;
+  execute: (params: P) => Promise<R>;
 }
 
-export const huliClient = new HuliClient();
+export const tools: Tool<any, any>[] = [
+  scheduleAppointment,
+  cancelAppointment,
+  rescheduleAppointment,
+  getAvailability,
+  getAppointments,
+  getAppointmentById,
+  updateAppointment,
+  confirmAppointment,
+  markNoShow,
+  getMostUsedAppointmentColors,
+  listAppointmentTags,
+];
+
+export function registerToolRoutes(app: FastifyInstance): void {
+  app.get('/mcp/tools', async () =>
+    tools.map((t) => ({
+      name: t.name,
+      description: t.description,
+      schema: (t.parameters as any).toJSON?.() ?? {},
+    }))
+  );
+
+  app.post<{ Params: { tool: string }; Body: unknown }>('/mcp/tool/execute/:tool', async (req, reply) => {
+    const tool = tools.find((t) => t.name === req.params.tool);
+    if (!tool) return reply.status(404).send({ error: 'Tool not found' });
+    const parsed = tool.parameters.safeParse(req.body);
+    if (!parsed.success) return reply.status(400).send(parsed.error);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = await tool.execute(parsed.data as any);
+    return result;
+  });
+}
