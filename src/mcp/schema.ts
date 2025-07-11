@@ -39,3 +39,7 @@ export interface Appointment {
   insuranceName?: string;
   insuranceNumber?: string;
 }
+
+export interface CancelAppointmentRequest {
+  is_status_modified_by_patient: boolean;
+}
