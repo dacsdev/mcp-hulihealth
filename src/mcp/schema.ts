@@ -140,3 +140,43 @@ export interface DoctorClinicAddress {
   idClinic: string;
   address: string;
 }
+
+export interface Patient {
+  id: string;
+  status?: string;
+  personalData?: {
+    firstName?: string;
+    lastName?: string;
+    knownAs?: string;
+    photo?: string;
+  };
+  contact?: {
+    email?: string;
+  };
+}
+
+export interface PatientFileRequest {
+  personalData: {
+    firstName: string;
+    lastName?: string;
+    knownAs?: string;
+  };
+}
+
+export interface PatientFile extends Patient {
+  idUser?: string;
+  idPatient?: string;
+}
+
+export interface PatientFileResponse extends PatientFile {}
+
+export interface PatientFileList {
+  patientFiles: PatientFile[];
+  total: number;
+  size: number;
+}
+
+export interface UploadDocumentRequest {
+  file: string;
+  filename: string;
+}

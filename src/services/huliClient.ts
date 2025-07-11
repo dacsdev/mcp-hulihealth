@@ -12,6 +12,11 @@ import {
   Doctor,
   DoctorClinicPhone,
   DoctorClinicAddress,
+  Patient,
+  PatientFileRequest,
+  PatientFileResponse,
+  PatientFileList,
+  UploadDocumentRequest,
 } from '../mcp/schema';
 import dotenv from 'dotenv';
 
@@ -38,7 +43,7 @@ class HuliClient {
     if (!this.token) await this.authenticate();
     const headers = {
       Authorization: `Bearer ${this.token}`,
-@@ -29,28 +42,142 @@ class HuliClient {
+@@ -29,28 +47,172 @@ class HuliClient {
       ...config.headers,
     };
     try {
@@ -145,8 +150,10 @@ class HuliClient {
     });
   }
 
-  async listPatientFiles(query: string, limit = 1): Promise<any> {
-    return this.request<any>({ method: 'GET', url: '/patient-file', params: { query, limit, offset: 0 } });
+  async listPatientFiles(query?: string, limit = 20, offset = 0): Promise<PatientFileList> {
+    const params: Record<string, any> = { limit, offset };
+    if (query) params.query = query;
+    return this.request<PatientFileList>({ method: 'GET', url: '/patient-file', params });
   }
 
   async getOrganization(expand?: string): Promise<OrganizationResponse> {
@@ -176,6 +183,34 @@ class HuliClient {
     return this.request<DoctorClinicAddress>({
       method: 'GET',
       url: `/doctor/${doctorId}/clinic/${clinicId}/address`,
+    });
+  }
+
+  async getPatient(patientFileId: string): Promise<Patient> {
+    return this.request<Patient>({ method: 'GET', url: `/patient/${patientFileId}` });
+  }
+
+  async getPatientByExternalId(externalId: string): Promise<Patient> {
+    return this.request<Patient>({ method: 'GET', url: `/patient/external-id/${externalId}` });
+  }
+
+  async createPatientFile(data: PatientFileRequest): Promise<PatientFileResponse> {
+    return this.request<PatientFileResponse>({ method: 'POST', url: '/patient-file', data });
+  }
+
+  async getPatientFile(patientFileId: string): Promise<PatientFileResponse> {
+    return this.request<PatientFileResponse>({ method: 'GET', url: `/patient-file/${patientFileId}` });
+  }
+
+  async uploadPatientDocument(
+    patientFileId: string,
+    ownerId: string,
+    data: UploadDocumentRequest
+  ): Promise<Record<string, unknown>> {
+    return this.request({
+      method: 'POST',
+      url: `/ehr/patient/${patientFileId}/owner/${ownerId}/document`,
+      data,
     });
   }
 }
