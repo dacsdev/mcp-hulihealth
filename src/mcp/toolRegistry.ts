@@ -7,6 +7,15 @@ import {
   cancelAppointment,
   CancelAppointmentParams,
 } from '../tools/cancelAppointment';
+import { rescheduleAppointment, RescheduleAppointmentParams } from '../tools/rescheduleAppointment';
+import { getAvailability, GetAvailabilityParams } from '../tools/getAvailability';
+import { getAppointments, GetAppointmentsParams } from '../tools/getAppointments';
+import { getAppointmentById, GetAppointmentByIdParams } from '../tools/getAppointmentById';
+import { updateAppointment, UpdateAppointmentParams } from '../tools/updateAppointment';
+import { confirmAppointment, ConfirmAppointmentParams } from '../tools/confirmAppointment';
+import { markNoShow, MarkNoShowParams } from '../tools/markNoShow';
+import { getMostUsedAppointmentColors, GetMostUsedAppointmentColorsParams } from '../tools/getMostUsedAppointmentColors';
+import { listAppointmentTags, ListAppointmentTagsParams } from '../tools/listAppointmentTags';
 import { Appointment } from './schema';
 import { z } from 'zod';
 
@@ -17,7 +26,19 @@ export interface Tool<P, R> {
   execute: (params: P) => Promise<R>;
 }
 
-export const tools: Tool<any, any>[] = [scheduleAppointment, cancelAppointment];
+export const tools: Tool<any, any>[] = [
+  scheduleAppointment,
+  cancelAppointment,
+  rescheduleAppointment,
+  getAvailability,
+  getAppointments,
+  getAppointmentById,
+  updateAppointment,
+  confirmAppointment,
+  markNoShow,
+  getMostUsedAppointmentColors,
+  listAppointmentTags,
+];
 
 export function registerToolRoutes(app: FastifyInstance): void {
   app.get('/mcp/tools', async () =>
