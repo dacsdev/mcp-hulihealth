@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import { CreateAppointmentRequest, Appointment } from '../mcp/schema';
+import { CreateAppointmentRequest, Appointment, CancelAppointmentRequest } from '../mcp/schema';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -50,6 +50,10 @@ class HuliClient {
 
   async createAppointment(data: CreateAppointmentRequest): Promise<Appointment> {
     return this.request<Appointment>({ method: 'POST', url: '/appointment', data });
+  }
+
+  async cancelAppointment(eventId: string, data: CancelAppointmentRequest): Promise<Appointment> {
+    return this.request<Appointment>({ method: 'PUT', url: `/appointment/${eventId}/cancel`, data });
   }
 }
 
