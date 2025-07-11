@@ -39,3 +39,144 @@ export interface Appointment {
   insuranceName?: string;
   insuranceNumber?: string;
 }
+
+export interface CancelAppointmentRequest {
+  is_status_modified_by_patient: boolean;
+}
+export interface RescheduleAppointmentRequest {
+  isStatusModifiedByPatient: boolean;
+  startDate: string;
+  timeFrom: string;
+  endDate?: string;
+  timeTo?: string;
+  sourceEvent?: string;
+}
+
+export interface UpdateAppointmentRequest {
+  notes?: string;
+  color?: string;
+  id_treatment?: number;
+  insurance_name?: string;
+  insurance_number?: string;
+  is_first_time_patient?: boolean;
+  is_deleted_for_doctor?: boolean;
+  id_tags?: number[];
+}
+
+export interface DoctorAvailabilityResponse {
+  idCalendar: string;
+  idClinic: string;
+  idDoctor: string;
+  slotDates: {
+    date: string;
+    dateL10n: string;
+    dateL10nComp: string;
+    slots: {
+      dateTime: string;
+      sourceEvent: string;
+      time: string;
+      timeL10n: string;
+    }[];
+  }[];
+}
+
+export interface AppointmentList {
+  appointments: Appointment[];
+  total: string;
+  size: string;
+}
+
+export interface BookingTag {
+  idTag: string;
+  idOrganization: string;
+  color: string;
+  description: string;
+  status: 'ACTIVE' | 'INACTIVE';
+}
+
+export interface AppointmentTagsResponse {
+  tags: BookingTag[];
+  total: string;
+  size: string;
+}
+
+export interface Authorization {
+  id: string;
+  idGrantor: string;
+  idGrantee: string;
+  idOrganization: string;
+  status: 'ACTIVE' | 'INACTIVE';
+}
+
+export interface Organization {
+  idOrganization: string;
+  idOwner: string;
+  name: string;
+  idUserModifiedBy?: string;
+  status: 'ACTIVE' | 'INACTIVE';
+  authorization?: Authorization[] | null;
+}
+
+export interface OrganizationResponse {
+  organizations: Organization[];
+}
+
+export interface Doctor {
+  id: string;
+  photo?: string;
+  url?: string;
+  status: 'ACTIVE' | 'INACTIVE' | 'DELETED';
+  idUser: string;
+}
+
+export interface DoctorClinicPhone {
+  idDoctor: string;
+  idClinic: string;
+  phone: string[];
+}
+
+export interface DoctorClinicAddress {
+  idDoctor: string;
+  idClinic: string;
+  address: string;
+}
+
+export interface Patient {
+  id: string;
+  status?: string;
+  personalData?: {
+    firstName?: string;
+    lastName?: string;
+    knownAs?: string;
+    photo?: string;
+  };
+  contact?: {
+    email?: string;
+  };
+}
+
+export interface PatientFileRequest {
+  personalData: {
+    firstName: string;
+    lastName?: string;
+    knownAs?: string;
+  };
+}
+
+export interface PatientFile extends Patient {
+  idUser?: string;
+  idPatient?: string;
+}
+
+export interface PatientFileResponse extends PatientFile {}
+
+export interface PatientFileList {
+  patientFiles: PatientFile[];
+  total: number;
+  size: number;
+}
+
+export interface UploadDocumentRequest {
+  file: string;
+  filename: string;
+}

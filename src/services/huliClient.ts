@@ -1,5 +1,23 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import { CreateAppointmentRequest, Appointment } from '../mcp/schema';
+import {
+  CreateAppointmentRequest,
+  Appointment,
+  CancelAppointmentRequest,
+  RescheduleAppointmentRequest,
+  UpdateAppointmentRequest,
+  DoctorAvailabilityResponse,
+  AppointmentList,
+  AppointmentTagsResponse,
+  OrganizationResponse,
+  Doctor,
+  DoctorClinicPhone,
+  DoctorClinicAddress,
+  Patient,
+  PatientFileRequest,
+  PatientFileResponse,
+  PatientFileList,
+  UploadDocumentRequest,
+} from '../mcp/schema';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -50,6 +68,150 @@ class HuliClient {
 
   async createAppointment(data: CreateAppointmentRequest): Promise<Appointment> {
     return this.request<Appointment>({ method: 'POST', url: '/appointment', data });
+  }
+
+  async cancelAppointment(eventId: string, data: CancelAppointmentRequest): Promise<Appointment> {
+    return this.request<Appointment>({ method: 'PUT', url: `/appointment/${eventId}/cancel`, data });
+  }
+
+  async rescheduleAppointment(eventId: string, data: RescheduleAppointmentRequest): Promise<Appointment> {
+    return this.request<Appointment>({ method: 'PUT', url: `/appointment/${eventId}/reschedule`, data });
+  }
+
+  async getAvailability(
+    doctorId: string,
+    clinicId: string,
+    from: string,
+    to: string
+  ): Promise<DoctorAvailabilityResponse> {
+    return this.request<DoctorAvailabilityResponse>({
+      method: 'GET',
+      url: `/availability/doctor/${doctorId}/clinic/${clinicId}`,
+      params: { from, to },
+    });
+  }
+
+  async getAppointmentsByDoctor(
+    doctorId: string,
+    options: {
+      from?: string;
+      to?: string;
+      limit?: number;
+      offset?: number;
+      status_appointment?: string;
+      idClinic?: string;
+    } = {}
+  ): Promise<AppointmentList> {
+    return this.request<AppointmentList>({
+      method: 'GET',
+      url: `/appointment/doctor/${doctorId}`,
+      params: options,
+    });
+  }
+
+  async getAppointmentsByPatient(
+    patientFileId: string,
+    options: {
+      from?: string;
+      to?: string;
+      limit?: number;
+      offset?: number;
+      status_appointment?: string;
+    } = {}
+  ): Promise<AppointmentList> {
+    return this.request<AppointmentList>({
+      method: 'GET',
+      url: `/appointment/patient/${patientFileId}`,
+      params: options,
+    });
+  }
+
+  async getAppointmentById(eventId: string): Promise<Appointment> {
+    return this.request<Appointment>({ method: 'GET', url: `/appointment/${eventId}` });
+  }
+
+  async updateAppointment(eventId: string, data: UpdateAppointmentRequest): Promise<Appointment> {
+    return this.request<Appointment>({ method: 'PUT', url: `/appointment/${eventId}`, data });
+  }
+
+  async confirmAppointment(eventId: string): Promise<Appointment> {
+    return this.request<Appointment>({ method: 'PUT', url: `/appointment/${eventId}/patient-confirm` });
+  }
+
+  async markNoShow(eventId: string): Promise<Appointment> {
+    return this.request<Appointment>({ method: 'PUT', url: `/appointment/${eventId}/no-show` });
+  }
+
+  async listAppointmentTags(limit = 10, offset = 0): Promise<AppointmentTagsResponse> {
+    return this.request<AppointmentTagsResponse>({
+      method: 'GET',
+      url: '/appointment/tags',
+      params: { limit, offset },
+    });
+  }
+
+  async listPatientFiles(query?: string, limit = 20, offset = 0): Promise<PatientFileList> {
+    const params: Record<string, any> = { limit, offset };
+    if (query) params.query = query;
+    return this.request<PatientFileList>({ method: 'GET', url: '/patient-file', params });
+  }
+
+  async getOrganization(expand?: string): Promise<OrganizationResponse> {
+    return this.request<OrganizationResponse>({
+      method: 'GET',
+      url: '/organization',
+      params: expand ? { expand } : {},
+    });
+  }
+
+  async getDoctorById(idDoctor: string): Promise<Doctor> {
+    return this.request<Doctor>({ method: 'GET', url: `/doctor/${idDoctor}` });
+  }
+
+  async getDoctorByUser(idUser: string): Promise<Doctor> {
+    return this.request<Doctor>({ method: 'GET', url: `/doctor/user/${idUser}` });
+  }
+
+  async getDoctorClinicPhone(doctorId: string, clinicId: string): Promise<DoctorClinicPhone> {
+    return this.request<DoctorClinicPhone>({
+      method: 'GET',
+      url: `/doctor/${doctorId}/clinic/${clinicId}/phone`,
+    });
+  }
+
+  async getDoctorClinicAddress(doctorId: string, clinicId: string): Promise<DoctorClinicAddress> {
+    return this.request<DoctorClinicAddress>({
+      method: 'GET',
+      url: `/doctor/${doctorId}/clinic/${clinicId}/address`,
+    });
+  }
+
+  async getPatient(patientFileId: string): Promise<Patient> {
+    return this.request<Patient>({ method: 'GET', url: `/patient/${patientFileId}` });
+  }
+
+  async getPatientByExternalId(externalId: string): Promise<Patient> {
+    return this.request<Patient>({ method: 'GET', url: `/patient/external-id/${externalId}` });
+  }
+
+  async createPatientFile(data: PatientFileRequest): Promise<PatientFileResponse> {
+    return this.request<PatientFileResponse>({ method: 'POST', url: '/patient-file', data });
+  }
+
+  async getPatientFile(patientFileId: string): Promise<PatientFileResponse> {
+    return this.request<PatientFileResponse>({ method: 'GET', url: `/patient-file/${patientFileId}` });
+  }
+
+  async uploadPatientDocument(
+    patientFileId: string,
+    ownerId: string,
+    data: UploadDocumentRequest
+  ): Promise<Record<string, unknown>> {
+    return this.request({
+      method: 'POST',
+      url: `/ehr/patient/${patientFileId}/owner/${ownerId}/document`,
+      data,
+    });
   }
 }
 
