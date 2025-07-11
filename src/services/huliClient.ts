@@ -63,7 +63,6 @@ class HuliClient {
     if (!this.token) await this.authenticate();
     const headers = {
       Authorization: `Bearer ${this.token}`,
-@@ -29,28 +67,255 @@ class HuliClient {
       ...config.headers,
     };
     try {
