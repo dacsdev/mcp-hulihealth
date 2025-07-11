@@ -29,6 +29,24 @@ import { getPatientFile, GetPatientFileParams } from '../tools/getPatientFile';
 import { uploadPatientDocument, UploadPatientDocumentParams } from '../tools/uploadPatientDocument';
 import { getClinics, GetClinicsParams } from '../tools/getClinics';
 import { getClinic, GetClinicParams } from '../tools/getClinic';
+import { getMedicalRecord, GetMedicalRecordParams } from '../tools/getMedicalRecord';
+import { getCheckup, GetCheckupParams } from '../tools/getCheckup';
+import { getCheckupNote, GetCheckupNoteParams } from '../tools/getCheckupNote';
+import { getCheckupDiagnosis, GetCheckupDiagnosisParams } from '../tools/getCheckupDiagnosis';
+import { getCheckupPrescription, GetCheckupPrescriptionParams } from '../tools/getCheckupPrescription';
+import { getCheckupVitalSigns, GetCheckupVitalSignsParams } from '../tools/getCheckupVitalSigns';
+import { getCheckupLabProcedureRequest, GetCheckupLabProcedureRequestParams } from '../tools/getCheckupLabProcedureRequest';
+import { getCheckupSuffering, GetCheckupSufferingParams } from '../tools/getCheckupSuffering';
+import { getCheckupReasonOfVisit, GetCheckupReasonOfVisitParams } from '../tools/getCheckupReasonOfVisit';
+import { getCheckupPhysicalNote, GetCheckupPhysicalNoteParams } from '../tools/getCheckupPhysicalNote';
+import { getCheckupAnthropometricData, GetCheckupAnthropometricDataParams } from '../tools/getCheckupAnthropometricData';
+import { getCheckupReviewOfSystems, GetCheckupReviewOfSystemsParams } from '../tools/getCheckupReviewOfSystems';
+import { getCheckupSystematicExamination, GetCheckupSystematicExaminationParams } from '../tools/getCheckupSystematicExamination';
+import { getCheckupSleepPattern, GetCheckupSleepPatternParams } from '../tools/getCheckupSleepPattern';
+import { getCheckupBowelHabit, GetCheckupBowelHabitParams } from '../tools/getCheckupBowelHabit';
+import { getCheckupPlanNote, GetCheckupPlanNoteParams } from '../tools/getCheckupPlanNote';
+import { getCheckupCustomQuestions, GetCheckupCustomQuestionsParams } from '../tools/getCheckupCustomQuestions';
+import { getCheckupLastMenstrualCycle, GetCheckupLastMenstrualCycleParams } from '../tools/getCheckupLastMenstrualCycle';
 import { Appointment } from './schema';
 import { z } from 'zod';
 
@@ -64,6 +82,24 @@ export const tools: Tool<any, any>[] = [
   uploadPatientDocument,
   getClinics,
   getClinic,
+  getMedicalRecord,
+  getCheckup,
+  getCheckupNote,
+  getCheckupDiagnosis,
+  getCheckupPrescription,
+  getCheckupVitalSigns,
+  getCheckupLabProcedureRequest,
+  getCheckupSuffering,
+  getCheckupReasonOfVisit,
+  getCheckupPhysicalNote,
+  getCheckupAnthropometricData,
+  getCheckupReviewOfSystems,
+  getCheckupSystematicExamination,
+  getCheckupSleepPattern,
+  getCheckupBowelHabit,
+  getCheckupPlanNote,
+  getCheckupCustomQuestions,
+  getCheckupLastMenstrualCycle,
 ];
 
 export function registerToolRoutes(app: FastifyInstance): void {

@@ -233,3 +233,157 @@ export interface Clinic {
 export interface ClinicList {
   clinics: Clinic[];
 }
+export interface MedicalRecord {
+  response: string;
+  data: Record<string, unknown>;
+}
+
+export interface Checkup {
+  idEvent: string;
+  idUser: string;
+  idPatientFile: string;
+  consultationType: 'INITIAL' | 'FOLLOW_UP';
+  isComplete: number;
+  modifiedOn: string;
+  startedOn: string;
+  idUserModifiedBy: string;
+}
+
+export interface CheckupNote {
+  idPatientCheckupNote: string;
+  idUserModifiedBy: string;
+  status?: string;
+  createdOn?: string;
+  modifiedOn?: string;
+  comments?: string;
+}
+
+export interface CheckupDiagnosis {
+  id: string;
+  idUserModifiedBy: string;
+  additionalObservations?: string;
+  evolutionNote?: string;
+  diagnostics?: Record<string, unknown>[];
+  createdOn?: string;
+  modifiedOn?: string;
+}
+
+export interface CheckupPrescription {
+  prescriptions: Record<string, unknown>[];
+}
+
+export interface CheckupVitalSigns {
+  idPatientVitalSigns: string;
+  idUserModifiedBy: string;
+  status?: string;
+  createdOn?: string;
+  modifiedOn?: string;
+  temperature?: number;
+  pulse?: number;
+  respiration?: number;
+  systolicPressure?: number;
+  diastolicPressure?: number;
+  saturation?: number;
+  glucose?: number;
+}
+
+export interface CheckupLabProcedure {
+  labProcedureRequests: Record<string, unknown>[];
+}
+
+export interface CheckupSuffering {
+  idPatientSuffering: string;
+  idUserModifiedBy: string;
+  status?: string;
+  suffering?: string;
+  createdOn?: string;
+  modifiedOn?: string;
+}
+
+export interface CheckupReasonOfVisit {
+  idPatientReasonOfVisit: string;
+  idUserModifiedBy: string;
+  status?: string;
+  reason?: string;
+  createdOn?: string;
+  modifiedOn?: string;
+}
+
+export interface CheckupPhysicalNote {
+  idPatientPhysicalNote: string;
+  idUserModifiedBy: string;
+  status?: string;
+  physical?: string;
+  createdOn?: string;
+  modifiedOn?: string;
+}
+
+export interface CheckupAnthropometric {
+  idPatientAnthropometricData: string;
+  idUserModifiedBy: string;
+  status?: string;
+  createdOn?: string;
+  modifiedOn?: string;
+  height?: number;
+  heightUnit?: string;
+  weight?: number;
+  weightUnit?: string;
+}
+
+export interface CheckupReviewOfSystems {
+  idPatientReviewOfSystems: string;
+  idUserModifiedBy: string;
+  status?: string;
+  values?: Record<string, unknown>[];
+  createdOn?: string;
+  modifiedOn?: string;
+}
+
+export interface CheckupSystematicExamination {
+  idPatientSystematicExamination: string;
+  idUserModifiedBy: string;
+  status?: string;
+  values?: Record<string, unknown>[];
+  createdOn?: string;
+  modifiedOn?: string;
+}
+
+export interface CheckupSleepPattern {
+  idPatientSleepPattern: string;
+  idUserModifiedBy: string;
+  status?: string;
+  notes?: string;
+  createdOn?: string;
+  modifiedOn?: string;
+}
+
+export interface CheckupBowelHabit {
+  idPatientBowelHabit: string;
+  idUserModifiedBy: string;
+  description?: string;
+  status?: string;
+  createdOn?: string;
+  modifiedOn?: string;
+}
+
+export interface CheckupPlanNote {
+  idPatientPlanNote: string;
+  idUserModifiedBy: string;
+  note?: string;
+  status?: string;
+  createdOn?: string;
+  modifiedOn?: string;
+}
+
+export interface CheckupCustomQuestions {
+  questions: Record<string, unknown>[];
+}
+
+export interface CheckupLastMenstrualCycle {
+  idPatientLastMenstrualCycle: string;
+  idUserModifiedBy: string;
+  status?: string;
+  createdOn?: string;
+  modifiedOn?: string;
+  lastMenstrualCycle?: string;
+}

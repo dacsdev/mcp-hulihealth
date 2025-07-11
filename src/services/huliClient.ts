@@ -19,6 +19,24 @@ import {
   UploadDocumentRequest,
   Clinic,
   ClinicList,
+  MedicalRecord,
+  Checkup,
+  CheckupNote,
+  CheckupDiagnosis,
+  CheckupPrescription,
+  CheckupVitalSigns,
+  CheckupLabProcedure,
+  CheckupSuffering,
+  CheckupReasonOfVisit,
+  CheckupPhysicalNote,
+  CheckupAnthropometric,
+  CheckupReviewOfSystems,
+  CheckupSystematicExamination,
+  CheckupSleepPattern,
+  CheckupBowelHabit,
+  CheckupPlanNote,
+  CheckupCustomQuestions,
+  CheckupLastMenstrualCycle,
 } from '../mcp/schema';
 import dotenv from 'dotenv';
 
@@ -45,7 +63,7 @@ class HuliClient {
     if (!this.token) await this.authenticate();
     const headers = {
       Authorization: `Bearer ${this.token}`,
-@@ -29,28 +49,180 @@ class HuliClient {
+@@ -29,28 +67,255 @@ class HuliClient {
       ...config.headers,
     };
     try {
@@ -222,6 +240,81 @@ class HuliClient {
 
   async getClinic(clinicId: string): Promise<Clinic> {
     return this.request<Clinic>({ method: 'GET', url: `/clinic/${clinicId}` });
+  }
+
+  async getMedicalRecord(patientId: string, ownerId: string): Promise<MedicalRecord> {
+    return this.request<MedicalRecord>({
+      method: 'GET',
+      url: `https://api.huli.io/practice/v1/ehr/patient/${patientId}/owner/${ownerId}/medical-record`,
+    });
+  }
+
+  async getCheckup(eventId: string): Promise<Checkup> {
+    return this.request<Checkup>({ method: 'GET', url: `/checkup/${eventId}` });
+  }
+
+  async getCheckupNote(eventId: string): Promise<CheckupNote> {
+    return this.request<CheckupNote>({ method: 'GET', url: `/checkup/${eventId}/note` });
+  }
+
+  async getCheckupDiagnosis(eventId: string): Promise<CheckupDiagnosis> {
+    return this.request<CheckupDiagnosis>({ method: 'GET', url: `/checkup/${eventId}/diagnosis` });
+  }
+
+  async getCheckupPrescription(eventId: string): Promise<CheckupPrescription> {
+    return this.request<CheckupPrescription>({ method: 'GET', url: `/checkup/${eventId}/prescription` });
+  }
+
+  async getCheckupVitalSigns(eventId: string): Promise<CheckupVitalSigns> {
+    return this.request<CheckupVitalSigns>({ method: 'GET', url: `/checkup/${eventId}/vital-signs` });
+  }
+
+  async getCheckupLabProcedureRequest(eventId: string): Promise<CheckupLabProcedure> {
+    return this.request<CheckupLabProcedure>({ method: 'GET', url: `/checkup/${eventId}/lab-procedure-request` });
+  }
+
+  async getCheckupSuffering(eventId: string): Promise<CheckupSuffering> {
+    return this.request<CheckupSuffering>({ method: 'GET', url: `/checkup/${eventId}/suffering` });
+  }
+
+  async getCheckupReasonOfVisit(eventId: string): Promise<CheckupReasonOfVisit> {
+    return this.request<CheckupReasonOfVisit>({ method: 'GET', url: `/checkup/${eventId}/reason-of-visit` });
+  }
+
+  async getCheckupPhysicalNote(eventId: string): Promise<CheckupPhysicalNote> {
+    return this.request<CheckupPhysicalNote>({ method: 'GET', url: `/checkup/${eventId}/physical-note` });
+  }
+
+  async getCheckupAnthropometricData(eventId: string): Promise<CheckupAnthropometric> {
+    return this.request<CheckupAnthropometric>({ method: 'GET', url: `/checkup/${eventId}/anthropometric-data` });
+  }
+
+  async getCheckupReviewOfSystems(eventId: string): Promise<CheckupReviewOfSystems> {
+    return this.request<CheckupReviewOfSystems>({ method: 'GET', url: `/checkup/${eventId}/review-of-systems` });
+  }
+
+  async getCheckupSystematicExamination(eventId: string): Promise<CheckupSystematicExamination> {
+    return this.request<CheckupSystematicExamination>({ method: 'GET', url: `/checkup/${eventId}/systematic-examination` });
+  }
+
+  async getCheckupSleepPattern(eventId: string): Promise<CheckupSleepPattern> {
+    return this.request<CheckupSleepPattern>({ method: 'GET', url: `/checkup/${eventId}/sleep-pattern` });
+  }
+
+  async getCheckupBowelHabit(eventId: string): Promise<CheckupBowelHabit> {
+    return this.request<CheckupBowelHabit>({ method: 'GET', url: `/checkup/${eventId}/bowel-habit` });
+  }
+
+  async getCheckupPlanNote(eventId: string): Promise<CheckupPlanNote> {
+    return this.request<CheckupPlanNote>({ method: 'GET', url: `/checkup/${eventId}/plan-note` });
+  }
+
+  async getCheckupCustomQuestions(eventId: string): Promise<CheckupCustomQuestions> {
+    return this.request<CheckupCustomQuestions>({ method: 'GET', url: `/checkup/${eventId}/questions` });
+  }
+
+  async getCheckupLastMenstrualCycle(eventId: string): Promise<CheckupLastMenstrualCycle> {
+    return this.request<CheckupLastMenstrualCycle>({ method: 'GET', url: `/checkup/${eventId}/last-menstrual-cycle` });
   }
 }
 
