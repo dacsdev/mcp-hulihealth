@@ -16,6 +16,11 @@ import { confirmAppointment, ConfirmAppointmentParams } from '../tools/confirmAp
 import { markNoShow, MarkNoShowParams } from '../tools/markNoShow';
 import { getMostUsedAppointmentColors, GetMostUsedAppointmentColorsParams } from '../tools/getMostUsedAppointmentColors';
 import { listAppointmentTags, ListAppointmentTagsParams } from '../tools/listAppointmentTags';
+import { getOrganization, GetOrganizationParams } from '../tools/getOrganization';
+import { getDoctor, GetDoctorParams } from '../tools/getDoctor';
+import { getDoctorByUser, GetDoctorByUserParams } from '../tools/getDoctorByUser';
+import { getDoctorClinicPhone, GetDoctorClinicPhoneParams } from '../tools/getDoctorClinicPhone';
+import { getDoctorClinicAddress, GetDoctorClinicAddressParams } from '../tools/getDoctorClinicAddress';
 import { Appointment } from './schema';
 import { z } from 'zod';
 
@@ -38,6 +43,11 @@ export const tools: Tool<any, any>[] = [
   markNoShow,
   getMostUsedAppointmentColors,
   listAppointmentTags,
+  getOrganization,
+  getDoctor,
+  getDoctorByUser,
+  getDoctorClinicPhone,
+  getDoctorClinicAddress,
 ];
 
 export function registerToolRoutes(app: FastifyInstance): void {

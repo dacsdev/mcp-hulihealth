@@ -99,3 +99,44 @@ export interface AppointmentTagsResponse {
   total: string;
   size: string;
 }
+
+export interface Authorization {
+  id: string;
+  idGrantor: string;
+  idGrantee: string;
+  idOrganization: string;
+  status: 'ACTIVE' | 'INACTIVE';
+}
+
+export interface Organization {
+  idOrganization: string;
+  idOwner: string;
+  name: string;
+  idUserModifiedBy?: string;
+  status: 'ACTIVE' | 'INACTIVE';
+  authorization?: Authorization[] | null;
+}
+
+export interface OrganizationResponse {
+  organizations: Organization[];
+}
+
+export interface Doctor {
+  id: string;
+  photo?: string;
+  url?: string;
+  status: 'ACTIVE' | 'INACTIVE' | 'DELETED';
+  idUser: string;
+}
+
+export interface DoctorClinicPhone {
+  idDoctor: string;
+  idClinic: string;
+  phone: string[];
+}
+
+export interface DoctorClinicAddress {
+  idDoctor: string;
+  idClinic: string;
+  address: string;
+}

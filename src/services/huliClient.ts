@@ -8,6 +8,10 @@ import {
   DoctorAvailabilityResponse,
   AppointmentList,
   AppointmentTagsResponse,
+  OrganizationResponse,
+  Doctor,
+  DoctorClinicPhone,
+  DoctorClinicAddress,
 } from '../mcp/schema';
 import dotenv from 'dotenv';
 
@@ -34,7 +38,7 @@ class HuliClient {
     if (!this.token) await this.authenticate();
     const headers = {
       Authorization: `Bearer ${this.token}`,
-@@ -29,28 +38,112 @@ class HuliClient {
+@@ -29,28 +42,142 @@ class HuliClient {
       ...config.headers,
     };
     try {
@@ -143,6 +147,36 @@ class HuliClient {
 
   async listPatientFiles(query: string, limit = 1): Promise<any> {
     return this.request<any>({ method: 'GET', url: '/patient-file', params: { query, limit, offset: 0 } });
+  }
+
+  async getOrganization(expand?: string): Promise<OrganizationResponse> {
+    return this.request<OrganizationResponse>({
+      method: 'GET',
+      url: '/organization',
+      params: expand ? { expand } : {},
+    });
+  }
+
+  async getDoctorById(idDoctor: string): Promise<Doctor> {
+    return this.request<Doctor>({ method: 'GET', url: `/doctor/${idDoctor}` });
+  }
+
+  async getDoctorByUser(idUser: string): Promise<Doctor> {
+    return this.request<Doctor>({ method: 'GET', url: `/doctor/user/${idUser}` });
+  }
+
+  async getDoctorClinicPhone(doctorId: string, clinicId: string): Promise<DoctorClinicPhone> {
+    return this.request<DoctorClinicPhone>({
+      method: 'GET',
+      url: `/doctor/${doctorId}/clinic/${clinicId}/phone`,
+    });
+  }
+
+  async getDoctorClinicAddress(doctorId: string, clinicId: string): Promise<DoctorClinicAddress> {
+    return this.request<DoctorClinicAddress>({
+      method: 'GET',
+      url: `/doctor/${doctorId}/clinic/${clinicId}/address`,
+    });
   }
 }
 
