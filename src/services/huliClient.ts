@@ -17,6 +17,8 @@ import {
   PatientFileResponse,
   PatientFileList,
   UploadDocumentRequest,
+  Clinic,
+  ClinicList,
 } from '../mcp/schema';
 import dotenv from 'dotenv';
 
@@ -43,7 +45,7 @@ class HuliClient {
     if (!this.token) await this.authenticate();
     const headers = {
       Authorization: `Bearer ${this.token}`,
-@@ -29,28 +47,172 @@ class HuliClient {
+@@ -29,28 +49,180 @@ class HuliClient {
       ...config.headers,
     };
     try {
@@ -212,6 +214,14 @@ class HuliClient {
       url: `/ehr/patient/${patientFileId}/owner/${ownerId}/document`,
       data,
     });
+  }
+
+  async getClinics(): Promise<ClinicList> {
+    return this.request<ClinicList>({ method: 'GET', url: '/clinic' });
+  }
+
+  async getClinic(clinicId: string): Promise<Clinic> {
+    return this.request<Clinic>({ method: 'GET', url: `/clinic/${clinicId}` });
   }
 }
 

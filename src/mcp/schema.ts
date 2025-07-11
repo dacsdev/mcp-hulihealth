@@ -180,3 +180,56 @@ export interface UploadDocumentRequest {
   file: string;
   filename: string;
 }
+export interface Country {
+  id: string;
+  iso2?: string;
+  iso3?: string;
+  name?: string;
+  phonePrefix?: string;
+}
+
+export interface Province {
+  id: string;
+  name?: string;
+  country?: Country;
+  timeZone?: string;
+}
+
+export interface City {
+  id: string;
+  name?: string;
+  province?: Province;
+}
+
+export interface User {
+  id: string;
+  email?: string;
+  displayName?: string;
+  firstName?: string;
+  lastName?: string;
+  gender?: 'MALE' | 'FEMALE';
+  phoneNumber?: string;
+  status?: 'ACTIVE' | 'INACTIVE' | 'BLOCKED' | 'DELETED';
+}
+
+export interface Clinic {
+  id: string;
+  name: string;
+  latitude?: number;
+  longitude?: number;
+  address?: string;
+  phoneNumber?: string;
+  email?: string;
+  url?: string;
+  status?: 'ACTIVE' | 'INACTIVE';
+  idCity?: string;
+  city?: City;
+  idUser?: string;
+  user?: User;
+  type?: 'PHYSICAL' | 'VIRTUAL';
+  cityName?: string;
+}
+
+export interface ClinicList {
+  clinics: Clinic[];
+}
