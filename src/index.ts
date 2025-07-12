@@ -1,13 +1,10 @@
 #!/usr/bin/env node
-import Fastify from 'fastify';
 import dotenv from 'dotenv';
-import {
-  tools,
-  registerToolRoutes,
-} from './mcp/toolRegistry.js';
+import { tools } from './mcp/toolRegistry.js';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { SSEServerTransport } from '@modelcontextprotocol/sdk/server/sse.js';
+import http from 'node:http';
 
 dotenv.config();
 
@@ -33,7 +30,8 @@ function safeLog(
       `[${level}] ${typeof data === 'object' ? JSON.stringify(data) : data}`
     );
   } else {
-    server.sendLoggingMessage({ level, data });
+    // Forward logs to the underlying server when not using stdio
+    void server.server.sendLoggingMessage({ level, data });
   }
 }
 
@@ -45,45 +43,16 @@ export function createMcpServer(): McpServer {
       {
         description: tool.description,
         inputSchema: tool.parameters as any,
-      },
-      async (params) => {
+      } as any,
+      async (params: unknown) => {
         const result = await tool.execute(params as any);
-        return { content: [{ type: 'json', json: result }] };
+        return { content: [{ type: 'json', json: result }] } as any;
       }
     );
   }
   return server;
 }
 
-export function buildHttpServer() {
-  const app = Fastify();
-  registerToolRoutes(app);
-
-  const sseSessions = new Map<
-    string,
-    { server: McpServer; transport: SSEServerTransport }
-  >();
-
-  app.get('/mcp', async (req, reply) => {
-    const server = createMcpServer();
-    const transport = new SSEServerTransport('/mcp', reply.raw);
-    sseSessions.set(transport.sessionId, { server, transport });
-    transport.onclose = () => sseSessions.delete(transport.sessionId);
-    await server.connect(transport);
-  });
-
-  app.post('/mcp', async (req, reply) => {
-    const sessionId = (req.query as any).sessionId as string;
-    const session = sseSessions.get(sessionId);
-    if (!session) {
-      reply.status(400).send({ error: 'Invalid sessionId' });
-      return;
-    }
-    await session.transport.handlePostMessage(req.raw, reply.raw, req.body);
-  });
-
-  return app;
-}
 
 export async function startStdioServer(): Promise<void> {
   validateEnv();
@@ -94,26 +63,51 @@ export async function startStdioServer(): Promise<void> {
   safeLog(server, 'info', 'HuliHealth MCP Server running on stdio');
 }
 
-export async function startHttpServer(port = PORT): Promise<void> {
+export async function startSseServer(port = PORT): Promise<void> {
   validateEnv();
-  const app = buildHttpServer();
-  try {
-    await app.listen({ port, host: '0.0.0.0' });
-    console.log(`HuliHealth MCP listening on http://0.0.0.0:${port}`);
-  } catch (err) {
-    app.log.error(err);
-    process.exit(1);
-  }
+  const sseSessions = new Map<
+    string,
+    { server: McpServer; transport: SSEServerTransport }
+  >();
+
+  const httpServer = http.createServer(async (req, res) => {
+    if (req.method === 'GET' && req.url === '/mcp') {
+      const server = createMcpServer();
+      const transport = new SSEServerTransport('/mcp', res);
+      sseSessions.set(transport.sessionId, { server, transport });
+      transport.onclose = () => sseSessions.delete(transport.sessionId);
+      await server.connect(transport);
+    } else if (req.method === 'POST' && req.url?.startsWith('/mcp')) {
+      const url = new URL(req.url, `http://${req.headers.host}`);
+      const sessionId = url.searchParams.get('sessionId');
+      const session = sessionId ? sseSessions.get(sessionId) : undefined;
+      if (!session) {
+        res.statusCode = 400;
+        res.end('Invalid sessionId');
+        return;
+      }
+      await session.transport.handlePostMessage(req, res);
+    } else {
+      res.statusCode = 404;
+      res.end('Not Found');
+    }
+  });
+
+  httpServer.listen(port, '0.0.0.0', () => {
+    console.log(`HuliHealth MCP SSE server listening on http://0.0.0.0:${port}`);
+  });
 }
 
-if (process.env.SSE_LOCAL === 'true') {
-  startHttpServer().catch((err) => {
-    console.error('Fatal error running server:', err);
-    process.exit(1);
-  });
-} else {
-  startStdioServer().catch((err) => {
-    console.error('Fatal error running server:', err);
-    process.exit(1);
-  });
+if (require.main === module) {
+  if (process.env.SSE_LOCAL === 'true') {
+    startSseServer().catch((err) => {
+      console.error('Fatal error running server:', err);
+      process.exit(1);
+    });
+  } else {
+    startStdioServer().catch((err) => {
+      console.error('Fatal error running server:', err);
+      process.exit(1);
+    });
+  }
 }
