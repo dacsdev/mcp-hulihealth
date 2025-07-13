@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { huliClient } from '../services/huliClient';
-import { OrganizationResponse } from '../mcp/schema';
+import { huliClient } from '../services/huliClient.js';
+import { OrganizationResponse } from '../mcp/schema.js';
 
 export const getOrganizationSchema = z.object({
   expand: z.enum(['AUTHORIZATION']).optional(),
@@ -18,3 +18,4 @@ export const getOrganization = {
 };
 export type GetOrganizationTool = typeof getOrganization;
 
+export default getOrganization;

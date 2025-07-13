@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { huliClient } from '../services/huliClient';
-import { Patient } from '../mcp/schema';
+import { huliClient } from '../services/huliClient.js';
+import { Patient } from '../mcp/schema.js';
 
 export const getPatientByExternalIdSchema = z.object({
   external_id: z.string(),
@@ -17,3 +17,4 @@ export const getPatientByExternalId = {
   },
 };
 export type GetPatientByExternalIdTool = typeof getPatientByExternalId;
+export default getPatientByExternalId;

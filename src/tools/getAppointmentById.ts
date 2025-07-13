@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { huliClient } from '../services/huliClient';
-import { Appointment } from '../mcp/schema';
+import { huliClient } from '../services/huliClient.js';
+import { Appointment } from '../mcp/schema.js';
 
 export const getAppointmentByIdSchema = z.object({
   event_id: z.string(),
@@ -25,3 +25,4 @@ export const getAppointmentById = {
   },
 };
 export type GetAppointmentByIdTool = typeof getAppointmentById;
+export default getAppointmentById;

@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { huliClient } from '../services/huliClient';
-import { PatientFileRequest, PatientFileResponse } from '../mcp/schema';
+import { huliClient } from '../services/huliClient.js';
+import { PatientFileRequest, PatientFileResponse } from '../mcp/schema.js';
 
 export const createPatientFileSchema = z.object({
   data: z.any(),
@@ -18,3 +18,4 @@ export const createPatientFile = {
   },
 };
 export type CreatePatientFileTool = typeof createPatientFile;
+export default createPatientFile;

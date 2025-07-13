@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { huliClient } from '../services/huliClient';
-import { AppointmentTagsResponse } from '../mcp/schema';
+import { huliClient } from '../services/huliClient.js';
+import { AppointmentTagsResponse } from '../mcp/schema.js';
 
 export const listAppointmentTagsSchema = z.object({
   limit: z.number().int().optional(),
@@ -29,3 +29,4 @@ export const listAppointmentTags = {
   },
 };
 export type ListAppointmentTagsTool = typeof listAppointmentTags;
+export default listAppointmentTags;

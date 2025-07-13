@@ -1,10 +1,10 @@
 import { z } from 'zod';
-import { huliClient } from '../services/huliClient';
+import { huliClient } from '../services/huliClient.js';
 import {
   Appointment,
   RescheduleAppointmentRequest,
   AppointmentList,
-} from '../mcp/schema';
+} from '../mcp/schema.js';
 
 export const rescheduleAppointmentSchema = z
   .object({
@@ -60,3 +60,4 @@ export const rescheduleAppointment = {
   },
 };
 export type RescheduleAppointmentTool = typeof rescheduleAppointment;
+export default rescheduleAppointment;

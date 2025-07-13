@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { huliClient } from '../services/huliClient';
-import { CheckupAnthropometric } from '../mcp/schema';
+import { huliClient } from '../services/huliClient.js';
+import { CheckupAnthropometric } from '../mcp/schema.js';
 
 export const getCheckupAnthropometricDataSchema = z.object({
   event_id: z.string(),
@@ -17,3 +17,4 @@ export const getCheckupAnthropometricData = {
   },
 };
 export type GetCheckupAnthropometricDataTool = typeof getCheckupAnthropometricData;
+export default getCheckupAnthropometricData;

@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { huliClient } from '../services/huliClient';
-import { CheckupBowelHabit } from '../mcp/schema';
+import { huliClient } from '../services/huliClient.js';
+import { CheckupBowelHabit } from '../mcp/schema.js';
 
 export const getCheckupBowelHabitSchema = z.object({
   event_id: z.string(),
@@ -17,3 +17,4 @@ export const getCheckupBowelHabit = {
   },
 };
 export type GetCheckupBowelHabitTool = typeof getCheckupBowelHabit;
+export default getCheckupBowelHabit;

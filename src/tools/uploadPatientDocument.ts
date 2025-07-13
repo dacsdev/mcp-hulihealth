@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { huliClient } from '../services/huliClient';
-import { UploadDocumentRequest } from '../mcp/schema';
+import { huliClient } from '../services/huliClient.js';
+import { UploadDocumentRequest } from '../mcp/schema.js';
 
 export const uploadPatientDocumentSchema = z.object({
   patient_file_id: z.string(),
@@ -20,3 +20,4 @@ export const uploadPatientDocument = {
   },
 };
 export type UploadPatientDocumentTool = typeof uploadPatientDocument;
+export default uploadPatientDocument;

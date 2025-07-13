@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { huliClient } from '../services/huliClient';
-import { Appointment } from '../mcp/schema';
+import { huliClient } from '../services/huliClient.js';
+import { Appointment } from '../mcp/schema.js';
 
 export const markNoShowSchema = z.object({
   event_id: z.string(),
@@ -25,3 +25,4 @@ export const markNoShow = {
   },
 };
 export type MarkNoShowTool = typeof markNoShow;
+export default markNoShow;
