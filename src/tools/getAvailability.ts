@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { huliClient } from '../services/huliClient';
-import { DoctorAvailabilityResponse } from '../mcp/schema';
+import { huliClient } from '../services/huliClient.js';
+import { DoctorAvailabilityResponse } from '../mcp/schema.js';
 
 export const getAvailabilitySchema = z.object({
   doctor_id: z.string(),
@@ -32,3 +32,4 @@ export const getAvailability = {
   },
 };
 export type GetAvailabilityTool = typeof getAvailability;
+export default getAvailability;

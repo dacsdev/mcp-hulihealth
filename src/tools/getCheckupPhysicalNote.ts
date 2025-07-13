@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { huliClient } from '../services/huliClient';
-import { CheckupPhysicalNote } from '../mcp/schema';
+import { huliClient } from '../services/huliClient.js';
+import { CheckupPhysicalNote } from '../mcp/schema.js';
 
 export const getCheckupPhysicalNoteSchema = z.object({
   event_id: z.string(),
@@ -17,3 +17,4 @@ export const getCheckupPhysicalNote = {
   },
 };
 export type GetCheckupPhysicalNoteTool = typeof getCheckupPhysicalNote;
+export default getCheckupPhysicalNote;

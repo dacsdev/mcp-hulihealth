@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { huliClient } from '../services/huliClient';
-import { Doctor } from '../mcp/schema';
+import { huliClient } from '../services/huliClient.js';
+import { Doctor } from '../mcp/schema.js';
 
 export const getDoctorByUserSchema = z.object({
   user_id: z.string(),
@@ -18,3 +18,4 @@ export const getDoctorByUser = {
 };
 export type GetDoctorByUserTool = typeof getDoctorByUser;
 
+export default getDoctorByUser;

@@ -36,5 +36,6 @@
   },
   "bin": {
     "hulihealth-mcp-dacs": "./bin/cli.js"
-  }
+  },
+  "type": "module"
 }

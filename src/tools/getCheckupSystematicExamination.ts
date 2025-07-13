@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { huliClient } from '../services/huliClient';
-import { CheckupSystematicExamination } from '../mcp/schema';
+import { huliClient } from '../services/huliClient.js';
+import { CheckupSystematicExamination } from '../mcp/schema.js';
 
 export const getCheckupSystematicExaminationSchema = z.object({
   event_id: z.string(),
@@ -17,3 +17,4 @@ export const getCheckupSystematicExamination = {
   },
 };
 export type GetCheckupSystematicExaminationTool = typeof getCheckupSystematicExamination;
+export default getCheckupSystematicExamination;

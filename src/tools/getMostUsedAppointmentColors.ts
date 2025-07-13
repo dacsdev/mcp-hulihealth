@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { huliClient } from '../services/huliClient';
+import { huliClient } from '../services/huliClient.js';
 
 export const getMostUsedAppointmentColorsSchema = z
   .object({
@@ -63,3 +63,4 @@ export const getMostUsedAppointmentColors = {
   },
 };
 export type GetMostUsedAppointmentColorsTool = typeof getMostUsedAppointmentColors;
+export default getMostUsedAppointmentColors;

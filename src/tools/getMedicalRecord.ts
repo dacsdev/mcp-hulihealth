@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { huliClient } from '../services/huliClient';
-import { MedicalRecord } from '../mcp/schema';
+import { huliClient } from '../services/huliClient.js';
+import { MedicalRecord } from '../mcp/schema.js';
 
 export const getMedicalRecordSchema = z.object({
   patient_id: z.string(),
@@ -18,3 +18,4 @@ export const getMedicalRecord = {
   },
 };
 export type GetMedicalRecordTool = typeof getMedicalRecord;
+export default getMedicalRecord;

@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { huliClient } from '../services/huliClient';
-import { ClinicList } from '../mcp/schema';
+import { huliClient } from '../services/huliClient.js';
+import { ClinicList } from '../mcp/schema.js';
 
 export const getClinicsSchema = z.object({});
 
@@ -15,3 +15,4 @@ export const getClinics = {
   },
 };
 export type GetClinicsTool = typeof getClinics;
+export default getClinics;

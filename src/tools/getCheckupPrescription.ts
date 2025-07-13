@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { huliClient } from '../services/huliClient';
-import { CheckupPrescription } from '../mcp/schema';
+import { huliClient } from '../services/huliClient.js';
+import { CheckupPrescription } from '../mcp/schema.js';
 
 export const getCheckupPrescriptionSchema = z.object({
   event_id: z.string(),
@@ -17,3 +17,4 @@ export const getCheckupPrescription = {
   },
 };
 export type GetCheckupPrescriptionTool = typeof getCheckupPrescription;
+export default getCheckupPrescription;

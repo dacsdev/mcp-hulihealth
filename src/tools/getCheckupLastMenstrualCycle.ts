@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { huliClient } from '../services/huliClient';
-import { CheckupLastMenstrualCycle } from '../mcp/schema';
+import { huliClient } from '../services/huliClient.js';
+import { CheckupLastMenstrualCycle } from '../mcp/schema.js';
 
 export const getCheckupLastMenstrualCycleSchema = z.object({
   event_id: z.string(),
@@ -17,3 +17,4 @@ export const getCheckupLastMenstrualCycle = {
   },
 };
 export type GetCheckupLastMenstrualCycleTool = typeof getCheckupLastMenstrualCycle;
+export default getCheckupLastMenstrualCycle;

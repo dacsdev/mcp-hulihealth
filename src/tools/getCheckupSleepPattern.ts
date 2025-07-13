@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { huliClient } from '../services/huliClient';
-import { CheckupSleepPattern } from '../mcp/schema';
+import { huliClient } from '../services/huliClient.js';
+import { CheckupSleepPattern } from '../mcp/schema.js';
 
 export const getCheckupSleepPatternSchema = z.object({
   event_id: z.string(),
@@ -17,3 +17,4 @@ export const getCheckupSleepPattern = {
   },
 };
 export type GetCheckupSleepPatternTool = typeof getCheckupSleepPattern;
+export default getCheckupSleepPattern;

@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { huliClient } from '../services/huliClient';
-import { Appointment, CancelAppointmentRequest } from '../mcp/schema';
+import { huliClient } from '../services/huliClient.js';
+import { Appointment, CancelAppointmentRequest } from '../mcp/schema.js';
 
 export const cancelAppointmentSchema = z.object({
   event_id: z.string(),
@@ -32,3 +32,4 @@ export const cancelAppointment = {
   },
 };
 export type CancelAppointmentTool = typeof cancelAppointment;
+export default cancelAppointment;

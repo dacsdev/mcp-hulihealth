@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { huliClient } from '../services/huliClient';
-import { PatientFileList } from '../mcp/schema';
+import { huliClient } from '../services/huliClient.js';
+import { PatientFileList } from '../mcp/schema.js';
 
 export const listPatientFilesSchema = z.object({
   query: z.string().optional(),
@@ -19,3 +19,4 @@ export const listPatientFiles = {
   },
 };
 export type ListPatientFilesTool = typeof listPatientFiles;
+export default listPatientFiles;
