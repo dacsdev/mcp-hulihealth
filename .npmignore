@@ -1,0 +1,27 @@
+# Excluye el código fuente TypeScript y tests
+src/
+test/
+examples/
+
+# Excluye archivos de configuración y herramientas de desarrollo
+*.ts
+*.map
+tsconfig.json
+eslint.config.*
+.prettier*
+.vitest*
+.env*
+.npmignore
+
+# Excluye archivos de ejemplo y documentación interna
+ejemplo_cursor.json
+
+# Excluye archivos de API y configuración interna
+openapi.json
+mcp.yaml
+
+# Incluye explícitamente los archivos necesarios
+!dist/
+!bin/
+!README.md
+!package.json

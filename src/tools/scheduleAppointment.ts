@@ -41,7 +41,7 @@ export const scheduleAppointment = {
 `,
   parameters: scheduleAppointmentSchema,
   async execute(params: ScheduleAppointmentParams): Promise<Appointment> {
-    const data: CreateAppointmentRequest = params;
+    const data = params as CreateAppointmentRequest;
     return huliClient.createAppointment(data);
   },
 };

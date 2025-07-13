@@ -38,7 +38,7 @@ import {
   CheckupCustomQuestions,
   CheckupLastMenstrualCycle,
 } from '../mcp/schema';
-import dotenv from 'dotenv';
+import * as dotenv from "dotenv";
 
 dotenv.config();
 
