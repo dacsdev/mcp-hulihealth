@@ -41,6 +41,17 @@ npx hulihealth-mcp-dacs           # STDIO mode
 npx hulihealth-mcp-dacs --sse     # SSE mode on port $PORT or 3000
 ```
 
+### Generating new tools
+
+Create new MCP tools with the `mcp-gen-tool` helper:
+
+```bash
+npm run mcp-gen-tool create-tool --name=<toolName>
+```
+
+The command scaffolds `src/tools/<toolName>.ts` with a basic template. After
+editing the file remember to register the tool in `src/mcp/toolRegistry.ts`.
+
 ### n8n Integration
 
 Example configuration to run the MCP from an n8n workflow:

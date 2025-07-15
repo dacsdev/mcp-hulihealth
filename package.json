@@ -15,7 +15,8 @@
     "test": "vitest",
     "lint": "eslint",
     "format": "prettier --write \"src/**/*.ts\"",
-    "prod": "node dist/index.js"
+    "prod": "node dist/index.js",
+    "mcp-gen-tool": "node --loader ts-node/esm ./src/mcp-gen-tool.ts"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "latest",
