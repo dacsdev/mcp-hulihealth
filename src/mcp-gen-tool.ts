@@ -27,8 +27,7 @@ function parseArgs() {
     }
   }
   return { command, options };
-}
-
+@@ -29,56 +32,56 @@ function parseArgs() {
 async function createTool(name: string) {
   if (!name) {
     console.error('Error: tool name is required.');
@@ -85,29 +84,3 @@ export default toolDefinition;
   console.log(`[mcp-gen-tool] Created new tool at ${filePath}`);
   console.log('[mcp-gen-tool] Remember to register the tool in src/mcp/toolRegistry.ts');
 }
-
-async function main() {
-  const { command, options } = parseArgs();
-  if (!command || command === '--help' || command === '-h') {
-    printHelp();
-    return;
-  }
-  if (command === 'create-tool') {
-    const name = options.name;
-    if (!name) {
-      console.error('Error: --name is required');
-      printHelp();
-      process.exit(1);
-    }
-    await createTool(name);
-  } else {
-    console.error(`Unknown command: ${command}`);
-    printHelp();
-    process.exit(1);
-  }
-}
-
-main().catch(err => {
-  console.error('[mcp-gen-tool] Failed:', err);
-  process.exit(1);
-});
