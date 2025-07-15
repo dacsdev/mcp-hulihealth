@@ -22,6 +22,7 @@
     "@modelcontextprotocol/sdk": "latest",
     "axios": "^1.6.7",
     "dotenv": "^16.3.1",
+    "validator": "^13.15.15",
     "zod": "^3.22.4"
   },
   "devDependencies": {

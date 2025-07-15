@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+/**
+ * Simple CLI for scaffolding new MCP tools.
+ */
 import { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -24,8 +27,7 @@ function parseArgs() {
     }
   }
   return { command, options };
-}
-
+@@ -29,56 +32,56 @@ function parseArgs() {
 async function createTool(name: string) {
   if (!name) {
     console.error('Error: tool name is required.');
@@ -51,12 +53,12 @@ import { huliClient } from '../services/huliClient.js';
 
 // Input Schema
 export const ${inputSchemaName} = z.object({
-  // TODO: define parameters
+  // exampleField: z.string().describe('Describe this parameter')
 }).describe('Input parameters for ${name}');
 
 // Output Schema
 export const ${outputSchemaName} = z.object({
-  // TODO: define result fields
+  // resultField: z.string().describe('Describe result field')
 }).describe('Result of ${name}');
 
 export async function execute(params: z.infer<typeof ${inputSchemaName}>) {
@@ -82,29 +84,3 @@ export default toolDefinition;
   console.log(`[mcp-gen-tool] Created new tool at ${filePath}`);
   console.log('[mcp-gen-tool] Remember to register the tool in src/mcp/toolRegistry.ts');
 }
-
-async function main() {
-  const { command, options } = parseArgs();
-  if (!command || command === '--help' || command === '-h') {
-    printHelp();
-    return;
-  }
-  if (command === 'create-tool') {
-    const name = options.name;
-    if (!name) {
-      console.error('Error: --name is required');
-      printHelp();
-      process.exit(1);
-    }
-    await createTool(name);
-  } else {
-    console.error(`Unknown command: ${command}`);
-    printHelp();
-    process.exit(1);
-  }
-}
-
-main().catch(err => {
-  console.error('[mcp-gen-tool] Failed:', err);
-  process.exit(1);
-});
