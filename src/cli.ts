@@ -5,13 +5,21 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import http from 'node:http';
 import { fileURLToPath } from 'node:url';
 import { tools } from './mcp/toolRegistry.js';
+import { sanitizeInput } from './utils/sanitize.js';
 
 dotenv.config();
 
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
 
+function handleFatalError(err: Error): void {
+  console.error('[MCP Fatal Error]', err.message);
+  process.exit(1);
+}
+
 function validateEnv(): void {
-  if (!process.env.HULIHEALTH_API_KEY || !process.env.HULI_ORG_ID) {
+  const apiKey = sanitizeInput(process.env.HULIHEALTH_API_KEY || '');
+  const orgId = sanitizeInput(process.env.HULI_ORG_ID || '');
+  if (!apiKey || !orgId) {
     throw new Error('HULIHEALTH_API_KEY and HULI_ORG_ID environment variables must be set');
   }
 }
@@ -42,18 +50,23 @@ export function createMcpServer(): any {
 
 export async function startStdioServer(): Promise<void> {
   console.error('[MCP Status] Initializing HuliHealth MCP Server in STDIO mode...');
-  validateEnv();
-  const server = createMcpServer();
-  const transport = new StdioServerTransport();
-  await server.connect(transport);
-  console.error('[MCP Status] HuliHealth MCP Server connected via STDIO. Ready for requests.');
+  try {
+    validateEnv();
+    const server = createMcpServer();
+    const transport = new StdioServerTransport();
+    await server.connect(transport);
+    console.error('[MCP Status] HuliHealth MCP Server connected via STDIO. Ready for requests.');
+  } catch (err) {
+    handleFatalError(err as Error);
+  }
 }
 
 export async function startSseServer(port = PORT): Promise<void> {
   console.log(`[MCP Status] Initializing HuliHealth MCP Server in SSE mode on port ${port}...`);
-  validateEnv();
-  const { SSEServerTransport } = await import('@modelcontextprotocol/sdk/server/sse.js');
-  const sseSessions = new Map<string, { server: any; transport: any }>();
+  try {
+    validateEnv();
+    const { SSEServerTransport } = await import('@modelcontextprotocol/sdk/server/sse.js');
+    const sseSessions = new Map<string, { server: any; transport: any }>();
 
   const httpServer = http.createServer(async (req: any, res: any) => {
     if (req.method === 'GET' && req.url?.startsWith('/mcp')) {
@@ -79,9 +92,12 @@ export async function startSseServer(port = PORT): Promise<void> {
     }
   });
 
-  httpServer.listen(port, '0.0.0.0', () => {
-    console.log(`[MCP Status] HuliHealth MCP SSE server listening on http://0.0.0.0:${port}`);
-  });
+    httpServer.listen(port, '0.0.0.0', () => {
+      console.log(`[MCP Status] HuliHealth MCP SSE server listening on http://0.0.0.0:${port}`);
+    });
+  } catch (err) {
+    handleFatalError(err as Error);
+  }
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
@@ -98,8 +114,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
       startStdioServer();
     }
   } catch (err: any) {
-    console.error('[MCP FATAL ERROR] Failed to start MCP server:', err.message);
-    process.exit(1);
+    handleFatalError(err);
   }
 }
 
