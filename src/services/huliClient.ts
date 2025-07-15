@@ -1,3 +1,7 @@
+/**
+ * Minimal wrapper around the HuliHealth HTTP API.
+ * Handles authentication and provides typed methods for all endpoints.
+ */
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import {
   CreateAppointmentRequest,
@@ -65,6 +69,10 @@ class HuliClient {
       Authorization: `Bearer ${this.token}`,
       ...config.headers,
     };
+  /**
+   * Makes an authenticated request to the HuliHealth API.
+   * Automatically refreshes the JWT if needed.
+   */
     try {
       const res = await this.client.request<T>({ ...config, headers });
       // Axios returns data property
