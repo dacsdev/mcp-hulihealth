@@ -1,0 +1,8 @@
+mcp_version: 1
+name: hulihealth-mcp
+version: 0.1.0
+summary: MCP server for interacting with the Huli API
+contact: dacs.ai
+license: MIT
+
+tools: []

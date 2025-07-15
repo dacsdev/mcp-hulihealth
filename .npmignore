@@ -11,6 +11,7 @@ eslint.config.*
 .prettier*
 .vitest*
 .env*
+!.env.example
 .npmignore
 
 # Excluye archivos de ejemplo y documentación interna

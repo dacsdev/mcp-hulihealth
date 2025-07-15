@@ -1,30 +1,25 @@
 # MCP HuliHealth
 
-Production-ready Model Context Protocol (MCP) server for HuliHealth, providing modular tools and endpoints for healthcare automation, LLM agents, and workflow integrations.  
-Written in Node.js/TypeScript and designed for maintainability, scalability, and secure authentication.
+A production-ready Model Context Protocol (MCP) server for HuliHealth. This CLI allows n8n or other automation tools to invoke HuliHealth APIs through a standard MCP interface.
 
 ---
 
 ## 🚀 Features
 
-- **Modular "tool-per-file" architecture** (see `/src/tools/`)
-- **In-memory JWT authentication** (auto-refresh, transparent for users)
-- **OpenAPI-based schemas** for all requests/responses
-- **LLM/agent/n8n-friendly endpoints** for maximum automation
-- **Legacy Python MCP** preserved for migration and comparison (`/legacy-python-mcp/`)
+- **Modular tool-per-file architecture** in `src/tools/`
+- **OpenAPI-based schemas** for type safety
+- **STDIO or SSE modes** for integration flexibility
+- **Designed for n8n and LLM agents**
 
 ---
 
 ## 📂 Project Structure
 
-/src/ # TypeScript source code (modular tools, services, etc.)
-/legacy-python-mcp/ # Previous Python MCP (for migration/reference)
-PROMPT.MD # Migration and architecture specification
-openapi.json # Reference OpenAPI spec from HuliHealth
-
-yaml
-Copy
-Edit
+```
+src/           TypeScript source
+openapi.json   Reference Huli API specification
+PROMT.md       Architecture notes
+```
 
 ---
 
@@ -33,50 +28,46 @@ Edit
 1. **Install dependencies**
    ```bash
    npm install
-(Optional, for legacy Python MCP):
+   ```
+2. **Configure environment variables**
+   Copy `.env.example` to `.env` and set your credentials.
 
-bash
-Copy
-Edit
-pip install -r legacy-python-mcp/requirements.txt
-Configure environment variables
-Copy .env.example to .env and set your keys:
+### Running the CLI
 
-ini
-Copy
-Edit
-HULIHEALTH_API_KEY=your-key-here
-HULI_ORG_ID=your-org-id
-💡 How to Use
-Run the MCP server:
+Use `npx` to start the server. Without arguments it runs in STDIO mode. Add `--sse` or set `PORT` to start an HTTP SSE server.
 
-bash
-Copy
-Edit
-npm start
-Tool/endpoint documentation:
-See /PROMPT.MD for standards and /openapi.json for schemas.
+```bash
+npx hulihealth-mcp-dacs           # STDIO mode
+npx hulihealth-mcp-dacs --sse     # SSE mode on port $PORT or 3000
+```
 
-🏛️ Migration Notes
-The full Python MCP is available in /legacy-python-mcp/ for reference.
+### n8n Integration
 
-All new development must follow the standards described in /PROMPT.MD.
+Example configuration to run the MCP from an n8n workflow:
+
+```json
+{
+  "mcpServers": {
+    "hulihealth-mcp": {
+      "command": "npx",
+      "args": ["-y", "hulihealth-mcp-dacs"],
+      "env": {
+        "HULIHEALTH_API_KEY": "YOUR-API-KEY",
+        "HULI_ORG_ID": "YOUR-ORG-ID"
+      }
+    }
+  }
+}
+```
+
+---
 
 ## 🔑 Environment Variables
 
-You must set the following environment variables for the MCP server to authenticate with HuliHealth:
+- `HULIHEALTH_API_KEY` – your API key (required)
+- `HULI_ORG_ID` – your organization ID (required)
+- `PORT` – optional port for SSE mode
 
-- `HULIHEALTH_API_KEY`
-- `HULI_ORG_ID`
+---
 
-These can be provided in a `.env` file (for local dev) or directly in your cloud/CI environment.
-
-## Legacy Python MCP
-
-The previous Python implementation (now archived for migration/reference) is available in `legacy-python-mcp/`.  
-All business logic, parameter validation, and endpoint design should be preserved and ported to the new Node.js/TypeScript architecture as described in `PROMPT.MD`.
-
-🤖 About
 Created by dacsdev.
-Designed for integration with LLM agents, workflow automation (n8n), and secure, enterprise-ready health tech platforms.
-
